@@ -7,14 +7,14 @@ def get_name_file():
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
         return file_name
-    
+
 def get_data_file(file_name):
     data_file = []
     try:
         file = open(file_name, "r", encoding="utf-8")
         data_file = file.readlines()
-    except:
-        print("File no found")
+    except FileNotFoundError:
+        print("File not found")
     return data_file
         
 def calculates(data_file):

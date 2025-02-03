@@ -1,23 +1,30 @@
+"""Module to convert numbers to binary and hexadecimal."""
+
 import sys
 import time
 import re
 import math
 
 def get_name_file():
+    """Gets the name of the file from the command line."""
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
         return file_name
+    print("Please provide the name of the file as an argument.")
+    return ""
 
 def get_data_file(file_name):
+    """Reads the data from the file."""
     data_file = []
     try:
-        file = open(file_name, "r", encoding="utf-8")
-        data_file = file.readlines()
+        with open(file_name, "r", encoding="utf-8") as file:
+            data_file = file.readlines()
     except FileNotFoundError:
         print("File not found")
     return data_file
 
 def convert(data_file):
+    """Converts the numbers to binary and hexadecimal."""
     results = []
     i = 0
     for line in data_file:
@@ -28,17 +35,18 @@ def convert(data_file):
             new_line = re.sub(r"[^0-9\-]", "", line)
             number = int(new_line)
             binary = dec_to_binary(number)
-            hex = binary_to_hex(binary, number)
+            number_hex = binary_to_hex(binary, number)
             results.append(
                 {
                     "number": number,
                     "binary": binary,
-                    "hex": hex,
+                    "hex": number_hex,
                 }
             )
     return results
 
 def dec_to_binary(number):
+    """Converts a decimal number to binary."""
     if number == 0:
         return "0"
 
@@ -81,6 +89,7 @@ def dec_to_binary(number):
     return binary_number
 
 def binary_to_hex(binary, number):
+    """Converts a binary number to hexadecimal."""
     hex_number = ""
     num_group = math.ceil(len(binary) / 4)
     for i in range(0, (num_group * 4) - len(binary)):
@@ -90,38 +99,24 @@ def binary_to_hex(binary, number):
             binary = "0" + binary
     for i in range(0, num_group * 4, 4):
         group = binary[i:i + 4]
-        if group == "0000":
-            hex_number += "0"
-        elif group == "0001":
-            hex_number += "1"
-        elif group == "0010":
-            hex_number += "2"
-        elif group == "0011":
-            hex_number += "3"
-        elif group == "0100":
-            hex_number += "4"
-        elif group == "0101":
-            hex_number += "5"
-        elif group == "0110":
-            hex_number += "6"
-        elif group == "0111":
-            hex_number += "7"
-        elif group == "1000":
-            hex_number += "8"
-        elif group == "1001":
-            hex_number += "9"
-        elif group == "1010":
-            hex_number += "A"
-        elif group == "1011":
-            hex_number += "B"
-        elif group == "1100":
-            hex_number += "C"
-        elif group == "1101":
-            hex_number += "D"
-        elif group == "1110":
-            hex_number += "E"
-        elif group == "1111":
-            hex_number += "F"
+        hex_number += {
+            "0000": "0",
+            "0001": "1",
+            "0010": "2",
+            "0011": "3",
+            "0100": "4",
+            "0101": "5",
+            "0110": "6",
+            "0111": "7",
+            "1000": "8",
+            "1001": "9",
+            "1010": "A",
+            "1011": "B",
+            "1100": "C",
+            "1101": "D",
+            "1110": "E",
+            "1111": "F",
+        }.get(group)
 
     if number < 0:
         fill_hex_number = ""
@@ -132,25 +127,27 @@ def binary_to_hex(binary, number):
     return hex_number
 
 def print_results(results, file_write):
+    """Prints the results of the statistics."""
     for result in results:
         line = str(result["number"]) + " " + str(result["binary"]) + " " + result["hex"]
         print(line)
         file_write.write(line + "\n")
 
 def main():
+    """Principal Main Compute Statistics Function."""
     start_time = time.time()
     file_prefix = "ArchivosApoyo/P2/"
     file_name = get_name_file()
-    file_write = open("ConversionResults.txt", "w", encoding="utf-8")
-    if file_name != "":
-        data_file = get_data_file(file_prefix + file_name)
-        results = convert(data_file)
-        print_results(results, file_write)
-    end_time = time.time()
-    string_time = "Execution Time " + str(end_time - start_time) + "s"
-    print(string_time)
-    file_write.write(string_time + "\n")
-    file_write.close()
+    with open ("ConversionResults.txt", "w", encoding="utf-8") as file_write:
+        if file_name != "":
+            data_file = get_data_file(file_prefix + file_name)
+            results = convert(data_file)
+            print_results(results, file_write)
+        end_time = time.time()
+        string_time = "Execution Time " + str(end_time - start_time) + "s"
+        print(string_time)
+        file_write.write(string_time + "\n")
+        file_write.close()
 
 if __name__ == "__main__":
     sys.exit(main())

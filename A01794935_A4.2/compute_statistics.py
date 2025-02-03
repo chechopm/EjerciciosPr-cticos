@@ -1,23 +1,30 @@
+"""Module calculate the principal statistics from a file input."""
+
 import sys
 import time
 import re
 import math
 
 def get_name_file():
+    """Gets the name of the file from the command line."""
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
         return file_name
+    print("Please provide the name of the file as an argument.")
+    return ""
 
 def get_data_file(file_name):
+    """Reads the data from the file."""
     data_file = []
     try:
-        file = open(file_name, "r", encoding="utf-8")
-        data_file = file.readlines()
+        with open(file_name, "r", encoding="utf-8") as file:
+            data_file = file.readlines()
     except FileNotFoundError:
         print("File not found")
     return data_file
-        
+
 def calculates(data_file):
+    """Calculates the principal statistics of the data."""
     number_data = []
     calcs = {
         'sum': 0,
@@ -50,6 +57,7 @@ def calculates(data_file):
     return calcs
 
 def median(number_data):
+    """Calculates the median of the data."""
     data = sorted(number_data)
     index = int(len(data) / 2)
 
@@ -59,35 +67,40 @@ def median(number_data):
     return (data[index - 1] + data[index]) / 2
 
 def mode(frequency):
+    """Calculates the mode of the data."""
     more_frequency = max(frequency.values())
     return [key for key, value in frequency.items() if value == more_frequency]
 
-def variance(mean, number_data, ):
+def variance(mean, number_data):
+    """Calculates the variance of the data."""
     aux_sum = 0
     for number in number_data:
         aux_sum += math.pow((number - mean), 2)
     return  aux_sum / (len(number_data) - 1)
 
 def print_results(results, file_write):
+    """Prints the results of the statistics."""
     for label, result in results.items():
-        line = label + " " + "{:.2f}".format(result)
+        line = f"{label} {result:.2f}"
         print(line)
         file_write.write(line + '\n')
 
 def main():
+    """Principal Main Compute Statistics Function."""
     start_time = time.time()
     file_prefix = "ArchivosApoyo/P1/"
     file_name = get_name_file()
-    file_write = open ("StatisticsResults.txt", "w", encoding="utf-8")
-    if file_name != "" :
-        data_file = get_data_file(file_prefix + file_name)
-        results = calculates(data_file)
-        print_results(results, file_write)
-    end_time = time.time()
-    string_time = 'Execution Time ' + str(end_time - start_time) + 's'
-    print(string_time)
-    file_write.write(string_time + '\n')
-    file_write.close()
+
+    with open ("StatisticsResults.txt", "w", encoding="utf-8") as file_write:
+        if file_name != "" :
+            data_file = get_data_file(file_prefix + file_name)
+            results = calculates(data_file)
+            print_results(results, file_write)
+        end_time = time.time()
+        string_time = 'Execution Time ' + str(end_time - start_time) + 's'
+        print(string_time)
+        file_write.write(string_time + '\n')
+        file_write.close()
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -137,7 +137,6 @@ def print_results(results, file_write):
         print(line)
         file_write.write(line + "\n")
 
-
 def main():
     start_time = time.time()
     file_prefix = "ArchivosApoyo/P2/"
@@ -152,7 +151,6 @@ def main():
     print(string_time)
     file_write.write(string_time + "\n")
     file_write.close()
-
 
 if __name__ == "__main__":
     sys.exit(main())

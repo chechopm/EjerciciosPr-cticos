@@ -1,2 +1,2 @@
 Total Sales: $165235.37
-Execution Time 0.003947734832763672s
+Execution Time 0.002111196517944336s

@@ -1,12 +1,21 @@
 """ This module contains the Customer class. """
 
+
+from dataclasses import dataclass
+
+
+@dataclass
 class Customer:
-    def __init__(self, id, name, last_name, nationality):
-        """Initializes the Customer class."""
-        self.id = id
-        self.name = name
-        self.last_name = last_name
-        self.nationality = nationality
-        
+    """This class represents a customer."""
+    customer_id: int
+    name: str
+    last_name: str
+    nationality: str
+
     def __str__(self):
-        return f'ID: {self.id}, Name: {self.name}, Last Name: {self.last_name}, Nationality: {self.nationality}'
+        return (
+            f'ID: {self.customer_id}, '
+            f'Name: {self.name}, '
+            f'Last Name: {self.last_name}, '
+            f'Nationality: {self.nationality}'
+        )

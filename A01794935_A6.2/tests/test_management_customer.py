@@ -21,7 +21,7 @@ class TestCustomerManagement(unittest.TestCase):
         self.assertEqual(self.customer_management.customers[0].name, "Test Customer")
         self.assertEqual(self.customer_management.customers[0].last_name, "Test LastName")
         self.assertEqual(self.customer_management.customers[0].nationality, "Test Nation")
-        self.assertEqual(self.customer_management.customers[0].id, 1)
+        self.assertEqual(self.customer_management.customers[0].customer_id, 1)
 
     def test_add_multiple_customers(self):
         self.customer_management.add_customer("Customer One", "LastName One", "Test Nation")
@@ -29,8 +29,8 @@ class TestCustomerManagement(unittest.TestCase):
         self.assertEqual(len(self.customer_management.customers), 2)
         self.assertEqual(self.customer_management.customers[0].name, "Customer One")
         self.assertEqual(self.customer_management.customers[1].name, "Customer Two")
-        self.assertEqual(self.customer_management.customers[0].id, 1)
-        self.assertEqual(self.customer_management.customers[1].id, 2)
+        self.assertEqual(self.customer_management.customers[0].customer_id, 1)
+        self.assertEqual(self.customer_management.customers[1].customer_id, 2)
         
     def test_list_customers(self):
         self.customer_management.add_customer("Customer One", "LastName One", "Test Nation")

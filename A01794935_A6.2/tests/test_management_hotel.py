@@ -21,7 +21,7 @@ class TestHotelManagement(unittest.TestCase):
         self.assertEqual(self.hotel_management.hotels[0].name, "Test Hotel")
         self.assertEqual(self.hotel_management.hotels[0].city, "Test City")
         self.assertEqual(self.hotel_management.hotels[0].num_rooms, 10)
-        self.assertEqual(self.hotel_management.hotels[0].id, 1)
+        self.assertEqual(self.hotel_management.hotels[0].hotel_id, 1)
 
     def test_add_multiple_hotels(self):
         self.hotel_management.add_hotel("Hotel One", "City One", 5)
@@ -29,8 +29,8 @@ class TestHotelManagement(unittest.TestCase):
         self.assertEqual(len(self.hotel_management.hotels), 2)
         self.assertEqual(self.hotel_management.hotels[0].name, "Hotel One")
         self.assertEqual(self.hotel_management.hotels[1].name, "Hotel Two")
-        self.assertEqual(self.hotel_management.hotels[0].id, 1)
-        self.assertEqual(self.hotel_management.hotels[1].id, 2)
+        self.assertEqual(self.hotel_management.hotels[0].hotel_id, 1)
+        self.assertEqual(self.hotel_management.hotels[1].hotel_id, 2)
         
     def test_list_hotels(self):
         self.hotel_management.add_hotel("Hotel One", "City One", 5)
@@ -88,7 +88,7 @@ class TestHotelManagement(unittest.TestCase):
         self.hotel_management.add_hotel("Hotel One", "City One", 5)
         hotel = self.hotel_management.get_hotel_by_id('1')
         room = self.hotel_management.reserve_room(hotel, "Test Customer")
-        self.hotel_management.cancel_room(hotel, room['id'])
+        self.hotel_management.cancel_room(hotel, room['room_id'])
         self.assertEqual(room['status'], 'available')
         self.assertIsNone(room['customer'])
         

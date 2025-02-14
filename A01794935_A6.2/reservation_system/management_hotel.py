@@ -1,4 +1,4 @@
-""" This module contains the Managemenet Hotel class. """
+""" This module contains the Management Hotel class. """
 
 
 from hotel import Hotel
@@ -40,6 +40,7 @@ class HotelManagement:
         """Lists all the hotels."""
         for hotel in self.hotels:
             print(hotel)
+        return self.hotels
 
     def get_hotel_by_id(self, id):
         """Get a hotel by id."""

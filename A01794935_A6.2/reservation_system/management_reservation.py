@@ -46,7 +46,7 @@ class ReservationManagement:
         print(f"Reservation '{id}' not found.")
         return None
         
-    def cancel_reservation_by_id(self, reservation):
+    def cancel_reservation(self, reservation):
         """Cancel a reservation by id."""
         if reservation is None:
             return None
@@ -57,3 +57,4 @@ class ReservationManagement:
         """Lists all the reservations."""
         for reservation in self.reservations:
             print(reservation)
+        return self.reservations

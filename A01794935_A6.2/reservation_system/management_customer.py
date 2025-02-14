@@ -38,6 +38,7 @@ class CustomerManagement:
         """Lists all the customers."""
         for customer in self.customers:
             print(customer)
+        return self.customers
 
     def get_customer_by_id(self, id):
         """Get a customer by id."""

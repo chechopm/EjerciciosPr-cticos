@@ -2,6 +2,7 @@
 
 class Customer:
     def __init__(self, id, name, last_name, nationality):
+        """Initializes the Customer class."""
         self.id = id
         self.name = name
         self.last_name = last_name

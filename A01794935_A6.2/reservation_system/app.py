@@ -4,6 +4,7 @@
 import sys
 from management_hotel import HotelManagement
 from management_customer import CustomerManagement
+from management_reservation import ReservationManagement
 
 
 def create_hotel(management_hotel):
@@ -37,9 +38,12 @@ def delete_hotel(management_hotel):
     """Delete a hotel by id."""
     id = input("Enter the id of the hotel: ")
     hotel = management_hotel.get_hotel_by_id(id)
+    if hotel is None:
+        return None
     management_hotel.delete_hotel_by_id(hotel)
     management_hotel.save_hotels()
-    
+
+
 def create_customer(management_customer):
     """Create a new customer."""
     name = input("Enter the name of the customer: ")
@@ -71,8 +75,37 @@ def delete_customer(management_customer):
     """Delete a customer by id."""
     id = input("Enter the id of the customer: ")
     customer = management_customer.get_customer_by_id(id)
+    if customer is None:
+        return None
     management_customer.delete_customer_by_id(customer)
     management_customer.save_customers()
+    
+def create_reservation(management_reservation, management_hotel, management_customer):
+    """Create a new customer."""
+    hotel_id = input("Enter the id of the hotel: ")
+    hotel = management_hotel.get_hotel_by_id(hotel_id)
+    if hotel is None:
+        return None
+    customer_id = input("Enter the id of the customer: ")
+    customer = management_customer.get_customer_by_id(customer_id)
+    if customer is None:
+        return None
+    room = management_hotel.reserve_room(hotel, customer.id)
+    if room is None:
+        return None
+    management_reservation.create_reservation(hotel_id, hotel.name, room['id'], customer_id, customer.name)
+    management_reservation.save_reservations()
+    management_hotel.save_hotels()
+    
+def cancel_reservation(management_reservation, management_hotel):
+    """Cancel a reservation by id."""
+    id = input("Enter the id of the reservation: ")
+    reservation = management_reservation.get_reservation_by_id(id)
+    hotel = management_hotel.get_hotel_by_id(str(reservation.hotel_id))
+    management_hotel.cancel_room(hotel, reservation.room_id)
+    management_reservation.cancel_reservation_by_id(reservation)
+    management_reservation.save_reservations()
+    management_hotel.save_hotels()
 
 def main():
     """Principal Main Reservation System."""
@@ -80,6 +113,8 @@ def main():
     management_hotel.load_hotels()
     management_customer = CustomerManagement()
     management_customer.load_customers()
+    management_reservation = ReservationManagement()
+    management_reservation.load_reservations()
 
     while True:
         print("\nReservation System Menu")
@@ -93,7 +128,9 @@ def main():
         print("8. Show Customer")
         print("9. Modify Customer")
         print("10. Delete Customer")
-        
+        print("11. Create Reservation")
+        print("12. List Reservations")
+        print("13. Cancel Reservation")
         print("0. Exit")
 
         choice = input("Enter your choice: ")
@@ -131,6 +168,15 @@ def main():
             
         elif choice == '10':
             delete_customer(management_customer)
+            
+        elif choice == '11':
+            create_reservation(management_reservation, management_hotel, management_customer)
+        
+        elif choice == '12':
+            management_reservation.list_reservations()
+            
+        elif choice == '13':
+            cancel_reservation(management_reservation, management_hotel)
 
         else:
             print("Invalid choice. Please try again.")

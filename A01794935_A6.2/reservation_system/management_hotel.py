@@ -14,6 +14,7 @@ class HotelManagement:
             with open('reservation_system/data/hotels.txt', 'r') as file:
                 for line in file:
                     id, name, city, num_rooms, rooms = line.strip().split(';')
+                    rooms = eval(rooms)
                     new_hotel = Hotel(int(id), name, city, int(num_rooms), rooms)
                     self.hotels.append(new_hotel)
             print("Hotels loaded successfully.")
@@ -84,7 +85,7 @@ class HotelManagement:
             if room['status'] == 'available':
                 room['status'] = 'reserved'
                 room['customer'] = customer
-                print(f"Room {room.id} reserved successfully.")
+                print(f"Room {room['id']} reserved successfully.")
                 return room
         print(f"No rooms available in hotel '{hotel.name}'.")
         return None
@@ -94,7 +95,7 @@ class HotelManagement:
         if hotel is None:
             return None
         for room in hotel.rooms:
-            if room['id'] == room_id:
+            if int(room['id']) == int(room_id):
                 room['status'] = 'available'
                 room['customer'] = None
                 print(f"Room {room_id} canceled successfully.")
